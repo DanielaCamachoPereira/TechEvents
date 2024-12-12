@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TechEvents.Models;
 
 namespace TechEvents.Controllers
 {
@@ -13,7 +16,17 @@ namespace TechEvents.Controllers
             return View();
         }
 
-        public ActionResult About()
+            public ActionResult GeneratePasswordHash()
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                var passwordHash = userManager.PasswordHasher.HashPassword("admin123");
+
+                // Ver el hash en la vista
+                ViewBag.PasswordHash = passwordHash;
+                return View();
+            }
+
+    public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
